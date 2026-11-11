@@ -1,0 +1,78 @@
+spring:
+  application:
+    name: omnicall-api
+  profiles:
+    default: dev
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/omnicall}
+    username: ${DATABASE_USER:omnicall}
+    password: ${DATABASE_PASSWORD:omnicall}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate.jdbc.time_zone: UTC
+  flyway:
+    enabled: true
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 3MB
+
+server:
+  port: ${SERVER_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+omnicall:
+  jwt:
+    secret: ${JWT_SECRET:change-me-in-production-use-a-long-random-string}
+    access-ttl: 15m
+    refresh-ttl: 30d
+  otp:
+    ttl: 5m
+    length: 6
+    max-attempts: 5
+  sms:
+    provider: ${SMS_PROVIDER:log}
+    twilio-account-sid: ${TWILIO_ACCOUNT_SID:}
+    twilio-auth-token: ${TWILIO_AUTH_TOKEN:}
+    twilio-from-number: ${TWILIO_FROM_NUMBER:}
+  livekit:
+    host: ${LIVEKIT_HOST:http://localhost:7880}
+    url: ${LIVEKIT_URL:ws://localhost:7880}
+    api-key: ${LIVEKIT_API_KEY:devkey}
+    api-secret: ${LIVEKIT_API_SECRET:secret}
+    token-ttl: 10m
+    agent-name: omnicall-translator
+  internal-token: ${INTERNAL_API_TOKEN:dev-internal-token}
+  ai:
+    base-url: ${AI_SERVICE_URL:http://localhost:8090}
+  usage:
+    daily-call-seconds: ${DAILY_CALL_SECONDS:3600}
+  media:
+    directory: ${MEDIA_DIR:./data/avatars}
+  fcm:
+    credentials-path: ${FIREBASE_CREDENTIALS_PATH:}
+    project-id: ${FIREBASE_PROJECT_ID:}
+  privacy:
+    policy-version: 2026-11-11
+    translation-retention-days: 30
+    ring-timeout: 45s
+
+logging:
+  level:
+    com.omnicall: INFO
