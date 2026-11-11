@@ -1,0 +1,3 @@
+from app.providers.google_cloud import GoogleTextToSpeechProvider
+
+SpeechSynthesizer = GoogleTextToSpeechProvider
